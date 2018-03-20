@@ -15,10 +15,6 @@ class ArtistListCreateView(generics.ListCreateAPIView):
     serializer_class = ArtistSerializer
     pagination_class = SmallPagination
 
-    def get(self, request, *args, **kwargs):
-        print('request.user:', request.user)
-        return super().get(request, *args, **kwargs)
-
 
 class ArtistRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Artist.objects.all()
