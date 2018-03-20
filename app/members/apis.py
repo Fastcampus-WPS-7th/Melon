@@ -1,18 +1,16 @@
+from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework.response import Response
 from rest_framework.views import APIView
 
 
 class AuthTokenView(APIView):
     def post(self, request):
-        # URL: /api/members/auth-token/
-        #   members.urls
-        #   config.urls에서 include
-
-        # username, password를 받음
-        # 유저 인증에 성공했을 경우
-        #   authenticate
-
-        # 토큰을 생성하거나 있으면 존재하는걸 가져와서
-        #   get_or_create
-
-        # Response로 돌려줌
-        pass
+        serializer = AuthTokenSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, _ = Token.objects.get_or_create(user=user)
+        data = {
+            'token': token.key,
+        }
+        return Response(data)
