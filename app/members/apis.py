@@ -1,7 +1,10 @@
+from rest_framework import permissions
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from .serializers import UserSerializer
 
 
 class AuthTokenView(APIView):
@@ -12,5 +15,16 @@ class AuthTokenView(APIView):
         token, _ = Token.objects.get_or_create(user=user)
         data = {
             'token': token.key,
+            'user': UserSerializer(user).data,
         }
         return Response(data)
+
+
+class MyUserDetail(APIView):
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
+
+    def get(self, request):
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data)
