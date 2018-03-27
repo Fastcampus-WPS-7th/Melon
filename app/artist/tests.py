@@ -143,12 +143,13 @@ class ArtistCreateTest(APITestCase):
         #   -> DEFAULT_FILE_STORAGE를 사용해 저장된 파일
 
         # FieldFile
-        uploaded_file = default_storage.open(
-            artist.img_profile.name
-        )
+        # uploaded_file = default_storage.open(
+        #     artist.img_profile.name
+        # )
         # 파일을 읽어서 파일시스템상의 임시파일을 생성
         with NamedTemporaryFile() as temp_file:
-            temp_file.write(uploaded_file.read())
+            temp_file.write(artist.img_profile.read())
+            # temp_file.write(uploaded_file.read())
             # 생성한 임시파일의 경로 (temp_file.name)와
             # 테스트용 정적파일의 경로 (file_path)를 이용해서
             # 같은 파일인지 비교
